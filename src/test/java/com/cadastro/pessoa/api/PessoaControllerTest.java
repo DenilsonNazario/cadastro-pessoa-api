@@ -3,6 +3,7 @@ package com.cadastro.pessoa.api;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,6 +21,9 @@ import com.cadastro.pessoa.api.services.PessoaService;
 
 import io.restassured.http.ContentType;
 import static io.restassured.module.mockmvc.RestAssuredMockMvc.*;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @WebMvcTest
 public class PessoaControllerTest {
@@ -100,4 +104,87 @@ public class PessoaControllerTest {
 			.then()
 		.statusCode(HttpStatus.NOT_FOUND.value());
 	}
+	
+	
+	@Test
+	public void deveRetornarStatus400_QuandoTentarCadastraPessoaSemCpf() {
+		//cenario
+		PessoaModel pessoa = new PessoaModel();
+		pessoa.setNome("Pessoa Test");
+		pessoa.setCpf("");
+		pessoa.setEmail("");
+		pessoa.setNascimento(new Date());		
+
+		when(this.pessoaService.gravarPessoa(pessoa)).thenReturn(pessoa);
+		given()
+		.contentType(ContentType.JSON)
+			.body(pessoa)
+				.when()
+				.post("/api/v1/pessoa/salvar")
+			.then()
+		.statusCode(HttpStatus.BAD_REQUEST.value());
+	}
+	
+	@Test
+	public void deveRetornarStatus400_QuandoTentarCadastraPessoaNome() {
+		//cenario
+		PessoaModel pessoa = new PessoaModel();
+		pessoa.setNome(null);
+		pessoa.setCpf("11111111111");
+		pessoa.setNascimento(new Date());	
+		pessoa.setEmail("");
+
+		when(this.pessoaService.gravarPessoa(pessoa)).thenReturn(pessoa);
+		given()
+			.contentType(ContentType.JSON)
+				.body(pessoa)
+			.when()
+				.post("/api/v1/pessoa/salvar")
+			.then()
+		.statusCode(HttpStatus.BAD_REQUEST.value());
+	}
+	
+	@Test
+	public void deveRetornarStatus400_QuandoTentarCadastraPessoaSemNascimento() {
+		//cenario
+		PessoaModel pessoa = new PessoaModel();
+		pessoa.setNome("Pessoa Test");
+		pessoa.setCpf("11111111111");
+		pessoa.setNascimento(null);	
+		pessoa.setEmail("teste");
+
+		when(this.pessoaService.gravarPessoa(pessoa)).thenReturn(pessoa);
+		given()
+				.contentType(ContentType.JSON)
+				.body(pessoa)
+			.when()
+				.post("/api/v1/pessoa/salvar")
+			.then()
+		.statusCode(HttpStatus.BAD_REQUEST.value());
+	}
+	
+	@Test
+	public void deveRetornarStatus201_QuandoCadastraPessoa() throws JsonProcessingException {
+		//cenario
+		PessoaModel pessoa = new PessoaModel();
+		pessoa.setNome("Pessoa Test");
+		pessoa.setCpf("11111111111");
+		pessoa.setNascimento(new Date());	
+		pessoa.setEmail("teste");
+		
+		when(this.pessoaService.gravarPessoa(pessoa)).thenReturn(pessoa);
+		
+		given()			
+			.contentType(ContentType.JSON)
+				.body(pessoa)			
+			.when()
+				.post("/api/v1/pessoa/salvar")				
+			.then()
+		.statusCode(HttpStatus.CREATED.value());
+		
+	
+	}
+	
+	
+	
 }

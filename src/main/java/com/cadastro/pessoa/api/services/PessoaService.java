@@ -35,4 +35,10 @@ public class PessoaService {
 	public PessoaModel gravarPessoa(PessoaModel pessoa){
 		return pessoaRepository.save(pessoa);
 	}
+	
+	public void deletarPessoa(Long id){
+		 pessoaRepository.deleteById(id);
+	}
+	
+	
 }

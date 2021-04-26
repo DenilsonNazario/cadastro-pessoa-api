@@ -15,6 +15,12 @@ public class PessoaService {
 	@Autowired
 	private PessoaRepository pessoaRepository;
 	
+	private EnderecoService enderecoService;
+	
+	public PessoaService(EnderecoService enderecoService) {
+		this.enderecoService = enderecoService;
+	}
+	
 	public List<PessoaModel> buscarTodos(){
 		return pessoaRepository.findAll();
 	}
@@ -35,10 +41,20 @@ public class PessoaService {
 	public PessoaModel gravarPessoa(PessoaModel pessoa){
 		return pessoaRepository.save(pessoa);
 	}
-	
+
 	public void deletarPessoa(Long id){
 		 pessoaRepository.deleteById(id);
 	}
+	
+	////V2 DA API
+	
+	public PessoaModel gravarPessoaComEndereco(PessoaModel pessoa){
+		pessoa.setEndereco( enderecoService.gravar(pessoa.getEndereco()));
+		return pessoaRepository.save(pessoa);
+	}
+	
+	
+	
 	
 	
 }

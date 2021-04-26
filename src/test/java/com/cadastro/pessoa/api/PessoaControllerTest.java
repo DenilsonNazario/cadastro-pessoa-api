@@ -23,7 +23,7 @@ import io.restassured.http.ContentType;
 import static io.restassured.module.mockmvc.RestAssuredMockMvc.*;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+
 
 @WebMvcTest
 public class PessoaControllerTest {

@@ -70,7 +70,7 @@ public class PessoaController {
 	public @Validated ResponseEntity<PessoaModel> salvaPessoa(@Validated @RequestBody PessoaModel pessoa) {
 		try {
 			String nome = pessoa.getNome();
-			if (nome.isBlank() || nome.isEmpty()) {
+			if ( nome.isEmpty()) {
 				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O Nome deve ser informado.");
 			}
 		} catch (Exception e) {
@@ -125,7 +125,7 @@ public class PessoaController {
 	public @Validated ResponseEntity<PessoaModel> salvaPessoaEndereco(@Validated @RequestBody PessoaModel pessoa) {
 		try {
 			String nome = pessoa.getNome();
-			if (nome.isBlank() || nome.isEmpty()) {
+			if (nome.isEmpty()) {
 				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O Nome deve ser informado.");
 			}
 		} catch (Exception e) {

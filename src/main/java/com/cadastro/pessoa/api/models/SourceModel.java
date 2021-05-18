@@ -7,11 +7,11 @@ import javax.persistence.Id;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-@Entity
+//@Entity
 public class SourceModel {
 
-	@Id//auto increment no banco de dados
-	@GeneratedValue(strategy=GenerationType.AUTO)
+//	@Id//auto increment no banco de dados
+//	@GeneratedValue(strategy=GenerationType.AUTO)
 	@JsonIgnore
 	private Long id;
 	
